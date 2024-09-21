@@ -1,0 +1,62 @@
+[
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "food",
+    "question": "what type of food you like?",
+    "choises": ["fish", "rice", "fruits", "chiken"],
+    "answer": "chiken"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  },
+  {
+    "category": "personal",
+    "question": "what are you doing?",
+    "choises": ["studying", "playing", "working", "sleeping"],
+    "answer": "working"
+  }
+]
