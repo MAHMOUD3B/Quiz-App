@@ -12,7 +12,6 @@ const statusBar = document.querySelector(".status");
 const questionContainer = document.querySelector(".question");
 const choisesContainer = document.querySelector(".choises");
 const bullets = document.querySelector(".bullets");
-const messageText = document.querySelector(".message p");
 const moreQuestionsBtn = document.querySelector(".message button");
 const minutsContainer = document.querySelector(".timer").children[0];
 const secondsContainer = document.querySelector(".timer").children[1];
@@ -25,17 +24,21 @@ const data = fetch("./questions.json")
     const numOfQuestions = arrOfQuestions.length;
     let numOfQuestion = localStorage.getItem("numOfQuestion");
     let numOfWrongs = localStorage.getItem("numOfWrongs");
+    let numOfCorrects = localStorage.getItem("numOfCorrects");
+    let notAnswerd =
+      numOfQuestions - (JSON.parse(numOfCorrects) + JSON.parse(numOfWrongs));
 
     // create countdown timer
     let minute = 0;
     let second = 15;
     const timer = setInterval(() => {
       if (minute === 0 && second === 0) {
-        clearInterval(timer);
-        numOfQuestion++;
-        localStorage.setItem("numOfQuestion", numOfQuestion);
-        location.reload();
-        console.log("Work");
+        if (numOfQuestion < numOfQuestions) {
+          clearInterval(timer);
+          numOfQuestion++;
+          localStorage.setItem("numOfQuestion", numOfQuestion);
+          location.reload();
+        }
       }
       if (second === 0) {
         minute--;
@@ -45,10 +48,24 @@ const data = fetch("./questions.json")
       minutsContainer.innerHTML = minute;
       secondsContainer.innerHTML = second;
     }, 1000);
+    if (JSON.parse(numOfQuestion) === numOfQuestions) {
+      clearInterval(timer);
+    }
 
     // handle the message in the end of questions
     if (JSON.parse(numOfQuestion) >= numOfQuestions) {
-      messageText.textContent = "congrats the quiz is finished!";
+      document.querySelector(
+        ".count"
+      ).innerHTML = `questions count: ${numOfQuestions}`;
+      document.querySelector(
+        ".correct"
+      ).innerHTML = `correct answers: ${numOfCorrects}`;
+      document.querySelector(
+        ".wrong"
+      ).innerHTML = ` Wrong answers: ${numOfWrongs}`;
+      document.querySelector(
+        ".not-answerd"
+      ).innerHTML = ` Not answerd: ${notAnswerd}`;
       moreQuestionsBtn.style.display = "block";
       statusBar.classList.add("hidden");
       questionContainer.classList.add("hidden");
@@ -59,40 +76,50 @@ const data = fetch("./questions.json")
     moreQuestionsBtn.addEventListener("click", () => {
       localStorage.setItem("numOfQuestion", 0);
       localStorage.setItem("numOfWrongs", 0);
+      localStorage.setItem("numOfCorrects", 0);
       location.reload();
     });
 
     // handle the status bar info
-    numOfWrongsContainer.innerHTML = numOfWrongs;
-    numOfQuestionContainer.innerHTML = JSON.parse(numOfQuestion) + 1;
-    numOfQuestionsContainer.innerHTML = numOfQuestions;
-    const category = arrOfQuestions[numOfQuestion].category;
-    categoryContainer.innerHTML = category;
+    if (numOfQuestion < numOfQuestions) {
+      numOfWrongsContainer.innerHTML = numOfWrongs;
+      numOfQuestionContainer.innerHTML = JSON.parse(numOfQuestion) + 1;
+      numOfQuestionsContainer.innerHTML = numOfQuestions;
+      const category = arrOfQuestions[numOfQuestion].category;
+      categoryContainer.innerHTML = category;
+    }
 
     //handle the choises of question
-    for (let i = 0; i < arrOfQuestions[numOfQuestion].choises.length; i++) {
-      const choiseContainer = document.createElement("li");
-      const choise = arrOfQuestions[numOfQuestion].choises[i];
-      choiseContainer.append(choise);
-      choisesContainer.appendChild(choiseContainer);
+    if (numOfQuestion < numOfQuestions) {
+      for (let i = 0; i < arrOfQuestions[numOfQuestion].choises.length; i++) {
+        const choiseContainer = document.createElement("li");
+        const choise = arrOfQuestions[numOfQuestion].choises[i];
+        choiseContainer.append(choise);
+        choisesContainer.appendChild(choiseContainer);
+      }
     }
 
     // handle the question
-    const question = arrOfQuestions[numOfQuestion].question;
-    const answer = arrOfQuestions[numOfQuestion].answer;
-    const choises = document.querySelectorAll(".choises li");
-    questionContainer.append(question);
-    choises.forEach((choise) => {
-      choise.addEventListener("click", (e) => {
-        if (e.target.innerHTML !== answer) {
-          numOfWrongs++;
-          localStorage.setItem("numOfWrongs", numOfWrongs);
-        }
-        numOfQuestion++;
-        localStorage.setItem("numOfQuestion", numOfQuestion);
-        location.reload();
+    if (numOfQuestion < numOfQuestions) {
+      const question = arrOfQuestions[numOfQuestion].question;
+      const answer = arrOfQuestions[numOfQuestion].answer;
+      questionContainer.append(question);
+      const choises = document.querySelectorAll(".choises li");
+      choises.forEach((choise) => {
+        choise.addEventListener("click", (e) => {
+          if (e.target.innerHTML === answer) {
+            numOfCorrects++;
+            localStorage.setItem("numOfCorrects", numOfCorrects);
+          } else {
+            numOfWrongs++;
+            localStorage.setItem("numOfWrongs", numOfWrongs);
+          }
+          numOfQuestion++;
+          localStorage.setItem("numOfQuestion", numOfQuestion);
+          location.reload();
+        });
       });
-    });
+    }
 
     // show the bullets as a number of questions
     for (let i = 0; i < numOfQuestions; i++) {
@@ -111,4 +138,3 @@ const data = fetch("./questions.json")
       }
     });
   });
-

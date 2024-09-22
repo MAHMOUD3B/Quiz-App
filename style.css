@@ -182,6 +182,18 @@ body {
         font-size: 26px;
         font-weight: bold;
         margin-bottom: 20px;
+        &.count {
+          color: var(--blue);
+        }
+        &.correct {
+          color: var(--green);
+        }
+        &.wrong {
+          color: var(--red);
+        }
+        &.not-answerd {
+          color: var(--orange);
+        }
       }
 
       button {
